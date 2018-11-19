@@ -1,9 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class LoginWindow extends JPanel implements ActionListener{
     private JLabel username_text,password_text;
@@ -39,19 +37,21 @@ public class LoginWindow extends JPanel implements ActionListener{
         frame.setVisible(true);
     }
 
-    boolean ifLogin(String username, String password) throws ClassNotFoundException {
+    boolean ifLogin(String username, String password) {
         Connection connection = null;
-        Class.forName("org.sqlite.JDBC");
         try {
             //TODO:the line below has some serious issue. fix this line ASAP
-            connection = DriverManager.getConnection("jdbc:sqlite::resource:java/database/coffee.sqlite");
-            if (connection!=null){
-                System.out.println("connection success");
-            }else {
-                System.err.println("connection refuse");
+            connection = DriverManager.getConnection("jdbc:sqlite:src/main/java/database/coffee.db");
+            Statement statement = connection.createStatement();
+            String sql="SELECT * FROM user where username=\'"+username+"\' AND password=\'"+password+"\'";
+            ResultSet rs = statement.executeQuery(sql);
+            if (rs.next()){
+                //System.out.println("login successful");
+                JOptionPane.showMessageDialog(this,"login successful",
+                        "welcome back", JOptionPane.INFORMATION_MESSAGE);
             }
-
-           // connection.close();
+            //shutdown the connection
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,9 +62,8 @@ public class LoginWindow extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (login_command.equals(e.getActionCommand())){
             String username = jtf_username.getText();
-            String password = password_text.getText();
-            System.out.println("test ok , "+username);
-
+            String password = String.valueOf(jpf_password.getPassword());
+            ifLogin(username,password);
         }
     }
 
@@ -77,6 +76,5 @@ public class LoginWindow extends JPanel implements ActionListener{
             }
         });
     }
-
 
 }
