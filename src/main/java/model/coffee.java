@@ -1,11 +1,11 @@
 package model;
 
 public class coffee {
-    protected String gname;
-    protected String gtype;
-    protected double gprice;
-    protected String gaddr;
-    protected String ginfo;
+    private String gname;
+    private String gtype;
+    private int gprice;
+    private String gaddr;
+    private String ginfo;
 
     public String getGtype() {
         return gtype;
@@ -15,11 +15,11 @@ public class coffee {
         this.gtype = gtype;
     }
 
-    public double getGprice() {
+    public int getGprice() {
         return gprice;
     }
 
-    public void setGprice(double gprice) {
+    public void setGprice(int gprice) {
         this.gprice = gprice;
     }
 
