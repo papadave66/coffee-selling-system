@@ -48,22 +48,24 @@ public class LoginWindow extends JPanel implements ActionListener{
                 //System.out.println("login successful");
                 JOptionPane.showMessageDialog(this, "login successful",
                         "welcome back", JOptionPane.INFORMATION_MESSAGE);
+                return true;
             }
+
             //shutdown the connection
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } if (connection!=null){
+        }
+
+        if (connection!=null) {
             try {
                 connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return true;
-        }else {
-            return false;
+            //return true;
         }
-
+        return false;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -73,9 +75,17 @@ public class LoginWindow extends JPanel implements ActionListener{
             if(ifLogin(username,password)){
                 //TODO:destroy this page and open the main window. The following 3 lines have not being tested.
                 JFrame login_main_frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-                login_main_frame.dispose();
-                new MainWindow();
+                //login_main_frame.dispose();
+                //TODO: The following lines are not clever enough, very bad code.
+                MainWindow mainWindow = new MainWindow();
+                JFrame jFrame = new JFrame();
+                jFrame.add(mainWindow);
+                jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                jFrame.pack();
+                jFrame.setVisible(true);
             }else {
+                JOptionPane.showMessageDialog(this, "login failed",
+                        "please check your username or password", JOptionPane.INFORMATION_MESSAGE);
                 System.err.println("in LoginWindow.class:Login error");
             }
         }
