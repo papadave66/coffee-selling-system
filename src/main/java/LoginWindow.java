@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -13,6 +14,7 @@ public class LoginWindow extends JPanel implements ActionListener{
     private LoginWindow(){
         //setLayout(new FlowLayout());
         //we need some button on login page
+        this.setPreferredSize(new Dimension(250, 120));
         username_text = new JLabel("username:");
         jtf_username = new JTextField(10);
         password_text = new JLabel("password:");
@@ -33,6 +35,7 @@ public class LoginWindow extends JPanel implements ActionListener{
         frame.add(new LoginWindow());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
@@ -82,6 +85,7 @@ public class LoginWindow extends JPanel implements ActionListener{
                 jFrame.add(mainWindow);
                 jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 jFrame.pack();
+                jFrame.setLocationRelativeTo(null);
                 jFrame.setVisible(true);
             }else {
                 JOptionPane.showMessageDialog(this, "login failed",

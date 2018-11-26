@@ -3,6 +3,7 @@ import model.coffee;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -28,6 +29,8 @@ public class MainWindow extends JPanel implements ListSelectionListener,ActionLi
         //load the data from database to List
         loadDataToList();
 
+        this.setPreferredSize(new Dimension(400, 400));
+
         JList<String> coffee_name;
         DefaultListModel<String> listModel = new DefaultListModel<>();
         for (model.coffee coffee : coffees) {
@@ -40,9 +43,14 @@ public class MainWindow extends JPanel implements ListSelectionListener,ActionLi
         JScrollPane listScrollPane = new JScrollPane(coffee_name);
         this.add(listScrollPane);
 
+        JLabel text_info = new JLabel("info");
+        this.add(text_info);
+
         //TODO: let JTextArea in middle shows coffee info.
         jta_coffeeInfo = new JTextArea();
         jta_coffeeInfo.setEditable(false);
+        jta_coffeeInfo.setColumns(20);
+        //jta_coffeeInfo.setSize(300,300);
         //in default , it shows the first coffee info.until you select other's
         jta_coffeeInfo.setText(coffees.get(0).getGinfo());
         this.add(jta_coffeeInfo);
@@ -69,6 +77,14 @@ public class MainWindow extends JPanel implements ListSelectionListener,ActionLi
         btn_purchase.addActionListener(this);
         btn_purchase.setActionCommand("purchase");
         this.add(btn_purchase);
+
+        JButton btn_message = new JButton("message to us");
+        btn_message.setActionCommand("message");
+        btn_message.addActionListener(this);
+        this.add(btn_message);
+
+        JLabel text_notice = new JLabel("PLEASE SELECT A COFFEE FIRST. OTHERWISE IT WILL CAUSE SOME BUGS");
+        this.add(text_notice);
     }
 
     @Override
@@ -94,10 +110,23 @@ public class MainWindow extends JPanel implements ListSelectionListener,ActionLi
                 break;
             case "purchase":
                 //TODO: throw a success window and clean all the shopping cart and balance.
-                JOptionPane.showMessageDialog(this,"you have purchased"+total_price,
+                JOptionPane.showMessageDialog(this,"you have purchased "+total_price,
                         "thank you",JOptionPane.INFORMATION_MESSAGE);
                 defaultListModel_shoppingcart.clear();
                 total_price = 0;
+                jLabel_balance.setText("0");
+                break;
+
+            case "message":
+                MessageWindow messageWindow = new MessageWindow();
+                JFrame jFrame = new JFrame();
+                jFrame.add(messageWindow);
+                jFrame.add(messageWindow);
+                jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                jFrame.pack();
+                jFrame.setLocationRelativeTo(null);
+                jFrame.setVisible(true);
+
                 break;
 
         }
@@ -137,8 +166,8 @@ public class MainWindow extends JPanel implements ListSelectionListener,ActionLi
         JFrame frame = new JFrame("selling-coffee-system Main window");
         frame.add(new MainWindow());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setSize(300,300);
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
